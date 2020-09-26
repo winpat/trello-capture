@@ -1,0 +1,15 @@
+requests
+pydantic
+
+# Development
+pre-commit
+pytest
+pytest-mypy
+pytest-isort
+pytest-flake8
+pytest-black
+pytest-cov
+pytest-mock
+ipython
+ipdb
+pdbpp
