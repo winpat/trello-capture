@@ -67,7 +67,7 @@ def select_resource(resources: List[Resource]) -> Resource:
     return mapping[choice]
 
 
-if __name__ == "__main__":
+def main():
     trello = Trello(
         key=getenv("TRELLO_KEY"),
         token=getenv("TRELLO_TOKEN"),
@@ -81,3 +81,7 @@ if __name__ == "__main__":
 
     card_name = dmenu()
     trello.create_card(board_list, card_name)
+
+
+if __name__ == "__main__":
+    main()
