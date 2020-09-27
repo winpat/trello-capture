@@ -3,6 +3,7 @@ from typing import Dict, Iterable, List, Optional
 
 import requests
 import sh
+import typer
 from pydantic import BaseModel
 from requests import Response
 
@@ -44,8 +45,8 @@ class Trello:
         response = self.request("GET", f"boards/{board.id}/lists/")
         return [BoardList(**list_data) for list_data in response.json()]
 
-    def create_card(self, board_list: BoardList, name: str) -> None:
-        params = {"idList": board_list.id, "name": name}
+    def create_card(self, list_id: BoardList, name: str) -> None:
+        params = {"idList": list_id, "name": name}
         response = self.request("POST", "cards/", params=params)
         response.raise_for_status()
 
@@ -67,21 +68,23 @@ def select_resource(resources: List[Resource]) -> Resource:
     return mapping[choice]
 
 
-def main():
+def main(list_id: Optional[str] = None):
     trello = Trello(
         key=getenv("TRELLO_KEY"),
         token=getenv("TRELLO_TOKEN"),
     )
 
-    boards = trello.get_boards()
-    board = select_resource(boards)
+    if not list_id:
+        boards = trello.get_boards()
+        board = select_resource(boards)
 
-    board_lists = trello.get_lists(board)
-    board_list = select_resource(board_lists)
+        board_lists = trello.get_lists(board)
+        board_list = select_resource(board_lists)
+        list_id = board_list.id
 
     card_name = dmenu()
-    trello.create_card(board_list, card_name)
+    trello.create_card(list_id, card_name)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

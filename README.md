@@ -27,7 +27,11 @@ export TRELLO_TOKEN=...
 3. Profit!
 
 ```
+# By default you can choose the right board and list interactively.
 > tc
+
+# You can can also specify a default list which cards get pushed to
+> tc --list-id 5e2d1fc020c51d025010f02a
 ```
 
 > You might want to configure a keyboard shortcut in your window manager/desktop
