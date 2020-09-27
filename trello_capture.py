@@ -1,10 +1,10 @@
+import optparse
 from os import getenv
 from sys import exit
-from typing import Dict, Iterable, List, NamedTuple, Optional
+from typing import Dict, Iterable, List, NamedTuple, Optional, Tuple
 
 import requests
 import sh
-import typer
 from requests import Response
 
 
@@ -74,11 +74,23 @@ def select_resource(resources: List[Resource]) -> Resource:
     return mapping[choice]
 
 
-def cli(
-    list_id: Optional[str] = None,
-    key: Optional[str] = getenv("TRELLO_KEY"),
-    token: Optional[str] = getenv("TRELLO_TOKEN"),
-):
+def parse_options() -> Tuple:
+    parser = optparse.OptionParser(description="Capture trello cards through dmenu")
+    parser.add_option("-l", "--list-id", help="Default list to push card to")
+    parser.add_option(
+        "-k", "--key", default=getenv("TRELLO_KEY"), help="Trello API key"
+    )
+    parser.add_option(
+        "-t", "--token", default=getenv("TRELLO_TOKEN"), help="Trello API token"
+    )
+    options, args = parser.parse_args()
+    return options.key, options.token, options.list_id
+
+
+def main():
+
+    key, token, list_id = parse_options()
+
     if key is None or token is None:
         print("Please specify an API key/token pair.")
         exit(1)
@@ -107,10 +119,6 @@ def cli(
     except Exception:
         print("Unable to create card.")
         exit(1)
-
-
-def main():
-    typer.run(cli)
 
 
 if __name__ == "__main__":

@@ -8,7 +8,6 @@ setuptools.setup(
     description="Capture trello cards through dmenu",
     install_requires=[
         "requests",
-        "typer",
         "sh",
     ],
     python_requires=">=3.6",
