@@ -81,15 +81,27 @@ def main(
     trello = Trello(key, token)
 
     if not list_id:
-        boards = trello.get_boards()
-        board = select_resource(boards)
+        try:
+            boards = trello.get_boards()
+            board = select_resource(boards)
+        except Exception:
+            print("Unable to determine board.")
+            exit(1)
 
-        board_lists = trello.get_lists(board)
-        board_list = select_resource(board_lists)
-        list_id = board_list.id
+        try:
+            board_lists = trello.get_lists(board)
+            board_list = select_resource(board_lists)
+            list_id = board_list.id
+        except Exception:
+            print("Unable to determine list.")
+            exit(1)
 
-    card_name = dmenu()
-    trello.create_card(list_id, card_name)
+    try:
+        card_name = dmenu()
+        trello.create_card(list_id, card_name)
+    except Exception:
+        print("Unable to create card.")
+        exit(1)
 
 
 if __name__ == "__main__":
