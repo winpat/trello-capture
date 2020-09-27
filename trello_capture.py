@@ -1,4 +1,5 @@
 from os import getenv
+from sys import exit
 from typing import Dict, Iterable, List, Optional
 
 import requests
@@ -68,11 +69,16 @@ def select_resource(resources: List[Resource]) -> Resource:
     return mapping[choice]
 
 
-def main(list_id: Optional[str] = None):
-    trello = Trello(
-        key=getenv("TRELLO_KEY"),
-        token=getenv("TRELLO_TOKEN"),
-    )
+def main(
+    list_id: Optional[str] = None,
+    key: Optional[str] = getenv("TRELLO_KEY"),
+    token: Optional[str] = getenv("TRELLO_TOKEN"),
+):
+    if key is None or token is None:
+        print("Please specify an API key/token pair.")
+        exit(1)
+
+    trello = Trello(key, token)
 
     if not list_id:
         boards = trello.get_boards()
