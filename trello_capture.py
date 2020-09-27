@@ -69,7 +69,7 @@ def select_resource(resources: List[Resource]) -> Resource:
     return mapping[choice]
 
 
-def main(
+def cli(
     list_id: Optional[str] = None,
     key: Optional[str] = getenv("TRELLO_KEY"),
     token: Optional[str] = getenv("TRELLO_TOKEN"),
@@ -104,5 +104,9 @@ def main(
         exit(1)
 
 
+def main():
+    typer.run(cli)
+
+
 if __name__ == "__main__":
-    typer.run(main)
+    main()
