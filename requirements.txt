@@ -1,6 +1,5 @@
 requests
 typer
-pydantic
 sh
 
 # Development

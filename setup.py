@@ -8,7 +8,6 @@ setuptools.setup(
     description="Capture trello cards through dmenu",
     install_requires=[
         "requests",
-        "pydantic",
         "typer",
         "sh",
     ],

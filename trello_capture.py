@@ -1,15 +1,14 @@
 from os import getenv
 from sys import exit
-from typing import Dict, Iterable, List, Optional
+from typing import Dict, Iterable, List, NamedTuple, Optional
 
 import requests
 import sh
 import typer
-from pydantic import BaseModel
 from requests import Response
 
 
-class Resource(BaseModel):
+class Resource(NamedTuple):
     id: str
     name: str
 
@@ -40,11 +39,17 @@ class Trello:
 
     def get_boards(self) -> List[Board]:
         response = self.request("GET", "members/me/boards/")
-        return [Board(**board_data) for board_data in response.json()]
+        return [
+            Board(name=board_data["name"], id=board_data["id"])
+            for board_data in response.json()
+        ]
 
     def get_lists(self, board: Board) -> List[BoardList]:
         response = self.request("GET", f"boards/{board.id}/lists/")
-        return [BoardList(**list_data) for list_data in response.json()]
+        return [
+            BoardList(name=list_data["name"], id=list_data["id"])
+            for list_data in response.json()
+        ]
 
     def create_card(self, list_id: BoardList, name: str) -> None:
         params = {"idList": list_id, "name": name}
