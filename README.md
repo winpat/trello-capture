@@ -11,6 +11,12 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install trello-
 pip install git  git+https://github.com/winpat/trello-capture.git
 ```
 
+Alternatively, you can also use [nix](https://nixos.org/).
+
+```bash
+nix -f default.nix -i trello-capture
+```
+
 ## Usage
 
 1. Create a an API token on the following page.
