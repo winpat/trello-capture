@@ -17,25 +17,36 @@ pip install git  git+https://github.com/winpat/trello-capture.git
 
   * https://trello.com/app-key
 
-2. Export API key and token as environment variables or pass them as arguments.
+2. There are three ways of how you can pass configuration options.
 
-```
-export TRELLO_KEY=...
-export TRELLO_TOKEN=...
+  1. Create a `.trellorc` in your home directory, consisting of key/value pairs:
 
-# OR
+    ```
+	key = ...
+	token = ...
+	list_id = ...
+    ```
 
-> tc --key ... --token ...
-```
+  2. Export them as environment variables
+
+    ```
+    export TRELLO_KEY=...
+    export TRELLO_TOKEN=...
+    export TRELLO_LIST_ID=...
+    ```
+
+  3. Pass them as option flags
+
+    ```
+    > tc --key ... --token ... --list-id
+    ```
 
 3. Profit!
 
 ```
-# By default you can choose the right board and list interactively.
+# If you did not configure a list id, then you will interactively
+# prompted to select your board and list.
 > tc
-
-# You can can also specify a default list which cards get pushed to..
-> tc --list-id 5e2d1fc020c51d025010f02a
 ```
 
 > You might want to configure a keyboard shortcut in your window manager/desktop

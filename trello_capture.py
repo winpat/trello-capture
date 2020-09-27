@@ -1,5 +1,6 @@
 import optparse
 from os import getenv
+from pathlib import Path
 from sys import exit
 from typing import Dict, Iterable, List, NamedTuple, Optional, Tuple
 
@@ -76,20 +77,46 @@ def select_resource(resources: List[Resource]) -> Resource:
 
 def parse_options() -> Tuple:
     parser = optparse.OptionParser(description="Capture trello cards through dmenu")
-    parser.add_option("-l", "--list-id", help="Default list to push card to")
+    parser.add_option(
+        "-l",
+        "--list-id",
+        default=getenv("TRELLO_LIST_ID"),
+        help="Default list to push card to",
+    )
     parser.add_option(
         "-k", "--key", default=getenv("TRELLO_KEY"), help="Trello API key"
     )
     parser.add_option(
         "-t", "--token", default=getenv("TRELLO_TOKEN"), help="Trello API token"
     )
-    options, args = parser.parse_args()
-    return options.key, options.token, options.list_id
+    options, _ = parser.parse_args()
+    return options
+
+
+def read_config():
+    config = {}
+    config_file = Path(Path.home(), ".trellorc")
+    if config_file.is_file():
+        content = config_file.read_text()
+        for line in content.split("\n"):
+            if not line:
+                continue
+            if line.startswith("#"):
+                continue
+            k, v = line.split(" = ", 1)
+            config[k.strip()] = v.strip()
+
+    return config
 
 
 def main():
 
-    key, token, list_id = parse_options()
+    config = read_config()
+    options = parse_options()
+
+    key = options.key or config.get("key")
+    token = options.token or config.get("token")
+    list_id = options.list_id or config.get("list_id")
 
     if key is None or token is None:
         print("Please specify an API key/token pair.")
