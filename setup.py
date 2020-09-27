@@ -9,6 +9,7 @@ setuptools.setup(
     install_requires=[
         "requests",
         "pydantic",
+        "typer",
         "sh",
     ],
     python_requires=">=3.6",
