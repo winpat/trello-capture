@@ -17,11 +17,15 @@ pip install git  git+https://github.com/winpat/trello-capture.git
 
   * https://trello.com/app-key
 
-2. Export API key and token as environment variables.
+2. Export API key and token as environment variables or pass them as arguments.
 
 ```
 export TRELLO_KEY=...
 export TRELLO_TOKEN=...
+
+# OR
+
+> tc --key ... --token ...
 ```
 
 3. Profit!
@@ -30,7 +34,7 @@ export TRELLO_TOKEN=...
 # By default you can choose the right board and list interactively.
 > tc
 
-# You can can also specify a default list which cards get pushed to
+# You can can also specify a default list which cards get pushed to..
 > tc --list-id 5e2d1fc020c51d025010f02a
 ```
 
